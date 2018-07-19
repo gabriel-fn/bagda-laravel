@@ -12,4 +12,9 @@ class Shop extends Model
     {
         return $this->hasMany('App\Item');
     }
+
+    public function rpg()
+    {
+        return $this->belongsTo('App\Rpg');
+    }
 }
