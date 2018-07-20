@@ -21,6 +21,7 @@ class CreatePlayersTable extends Migration
             $table->unsignedInteger('gold');
             $table->unsignedInteger('cash');
             $table->text('detail');
+            $table->string('image');
             $table->timestamps();
 
             $table->foreign('rpg_id')->references('id')->on('rpgs')->onDelete('cascade');

@@ -11,5 +11,6 @@ $factory->define(App\Item::class, function (Faker $faker) {
         'cash_price' => rand(10, 100),
         'require_test' => rand(0, 1),
         'make_new' => rand(0, 1),
+        'max_units' => rand(0, 1),
     ];
 });

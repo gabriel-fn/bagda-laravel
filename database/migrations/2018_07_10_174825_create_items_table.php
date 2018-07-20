@@ -23,6 +23,7 @@ class CreateItemsTable extends Migration
             $table->unsignedInteger('cash_price');
             $table->boolean('require_test');
             $table->boolean('make_new');
+            $table->unsignedInteger('max_units');
             $table->timestamps();
 
             $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');

@@ -21,7 +21,10 @@ class ItemsTableSeeder extends Seeder
     
         foreach ($players as $player) {
             $player->items()->attach([
-                $rpgs[0]->shops[rand(0,2)]->items[rand(0,2)]->id => ['status' => rand(0,1)]
+                $rpgs[0]->shops[rand(0,2)]->items[rand(0,2)]->id => [
+                    'status' => rand(0,1),
+                    'units' => 1
+                ]
             ]);
         }
 
@@ -29,7 +32,10 @@ class ItemsTableSeeder extends Seeder
     
         foreach ($players as $player) {
             $player->items()->attach([
-                $rpgs[1]->shops[rand(0,2)]->items[rand(0,2)]->id => ['status' => rand(0,1)]
+                $rpgs[1]->shops[rand(0,2)]->items[rand(0,2)]->id => [
+                    'status' => rand(0,1),
+                    'units' => 1
+                ]
             ]);
         }
     }

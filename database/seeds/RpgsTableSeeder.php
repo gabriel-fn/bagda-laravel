@@ -33,6 +33,7 @@ class RpgsTableSeeder extends Seeder
                     'gold' => rand(1000, 2000),
                     'cash' => rand(100, 1000),
                     'detail' => 'bulhufas para definir o personagem',
+                    'image' => 'default.jpg',
                 ]
             ]);
         });

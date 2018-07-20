@@ -17,6 +17,7 @@ class CreateRelationshipsTable extends Migration
             $table->unsignedInteger('item_id');
             $table->unsignedInteger('player_id');
             $table->boolean('status');
+            $table->unsignedInteger('units');
 
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('player_id')->references('id')->on('players')->onDelete('cascade');
@@ -30,6 +31,6 @@ class CreateRelationshipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_user');
+        Schema::dropIfExists('item_player');
     }
 }

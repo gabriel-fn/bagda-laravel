@@ -18,6 +18,8 @@ class CreateRpgsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('name')->unique();
             $table->boolean('is_public');
+            $table->unsignedInteger('gold_starter');
+            $table->unsignedInteger('cash_starter');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
