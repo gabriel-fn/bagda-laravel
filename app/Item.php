@@ -8,10 +8,11 @@ class Item extends Model
 {
     protected $guarded = ['id'];
 
-    public function users()
+    public function players() 
     {
-        return $this->belongsToMany('App\User')
+        return $this->belongsToMany('App\Player', 'item_player', 'item_id', 'player_id')
                     ->as('process')
                     ->withPivot('status');
     }
+    
 }

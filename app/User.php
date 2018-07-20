@@ -30,30 +30,19 @@ class User extends Authenticatable
 
     public function rpgs() 
     {
-        return $this->belongsToMany('App\Rpg')
-                    ->as('player')
-                    ->withPivot('credential', 'gold', 'cash', 'detail');
+        return $this->belongsToMany('App\Rpg', 'players')
+                    ->withTimeStamps()
+                    ->as('players')
+                    ->withPivot('credential', 'gold', 'cash', 'detail', 'id')
+                    ->using('App\Player');
+    }
+
+    public function players() {
+        return $this->hasMany('App\Player');
     }
 
     public function my_rpgs()
     {
         return $this->hasMany('App\Rpg');
-    }
-
-    public function quests()
-    {
-        return $this->belongsToMany('App\Quest');
-    }
-
-    public function my_quests()
-    {
-        return $this->hasMany('App\Quest');
-    }
-
-    public function items()
-    {
-        return $this->belongsToMany('App\Item')
-                    ->as('process')
-                    ->withPivot('status');
     }
 }

@@ -8,16 +8,6 @@ class Rpg extends Model
 {
     protected $guarded = ['id'];
 
-    public function quests()
-    {
-        return $this->hasMany('App\Quest');
-    }
-
-    public function reports()
-    {
-        return $this->hasMany('App\Report');
-    }
-
     public function shops()
     {
         return $this->hasMany('App\Shop');
@@ -33,10 +23,16 @@ class Rpg extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function players() 
+    public function players() {
+        return $this->hasMany('App\Player');
+    }
+
+    public function users() 
     {
-        return $this->belongsToMany('App\User')
-                    ->as('player')
-                    ->withPivot('credential', 'gold', 'cash', 'detail');
+        return $this->belongsToMany('App\User', 'players')
+                    ->withTimeStamps()
+                    ->as('players')
+                    ->withPivot('credential', 'gold', 'cash', 'detail', 'id')
+                    ->using('App\Player');
     }
 }

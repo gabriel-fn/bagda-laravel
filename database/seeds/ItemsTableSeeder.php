@@ -15,16 +15,22 @@ class ItemsTableSeeder extends Seeder
             $shop->items()->saveMany(factory(App\Item::class, 3)->make());
         });
 
-        $users = App\User::with('rpgs.shops.items')->get();
+        $rpgs = App\Rpg::with(['players', 'shops.items'])->get();
 
-        $users->each(function ($user) {
-            $user->rpgs->each(function ($rpg) use ($user){
-                $rpg->shops->each(function ($shop) use ($user){
-                    $user->items()->attach([
-                        $shop->items[0]->id => ['status' => true],
-                    ]);
-                });
-            });
-        });
+        $players = $rpgs[0]->players()->get();
+    
+        foreach ($players as $player) {
+            $player->items()->attach([
+                $rpgs[0]->shops[rand(0,2)]->items[rand(0,2)]->id => ['status' => rand(0,1)]
+            ]);
+        }
+
+        $players = $rpgs[1]->players()->get();
+    
+        foreach ($players as $player) {
+            $player->items()->attach([
+                $rpgs[1]->shops[rand(0,2)]->items[rand(0,2)]->id => ['status' => rand(0,1)]
+            ]);
+        }
     }
 }
