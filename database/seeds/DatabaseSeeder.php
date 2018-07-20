@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             RpgsTableSeeder::class,
-            ReportsTableSeeder::class,
+            //ReportsTableSeeder::class,
             ShopsTableSeeder::class,
             ItemsTableSeeder::class,
-            QuestsTableSeeder::class,
+            //QuestsTableSeeder::class,
         ]);
     }
 }
