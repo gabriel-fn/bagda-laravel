@@ -26,7 +26,7 @@ Route::get('rpgs', function () {
 });
 
 Route::get('rpgs/{id}', function ($id) {
-    return App\Rpg::with(['shops.items', 'players.items'])->where('id', $id)->first();
+    return App\Rpg::find($id);
 });
 
 Route::get('/rpgs/{id}/shops', function ($id) {

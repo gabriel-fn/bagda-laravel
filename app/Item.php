@@ -12,7 +12,7 @@ class Item extends Model
     {
         return $this->belongsToMany('App\Player', 'item_player', 'item_id', 'player_id')
                     ->as('process')
-                    ->withPivot('status');
+                    ->withPivot(['status', 'units']);
     }
     
 }
