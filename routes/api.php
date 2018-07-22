@@ -17,17 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/rpgs/user', function (Request $request) {
-    return $request->user()->rpgs()->with('master')->get();
-});
+Route::middleware('auth:api')->get('/rpgs/user', 'RpgController@index');
 
-Route::get('rpgs', function () {
-    return App\Rpg::with('master')->get();
-});
+Route::get('rpgs', 'RpgController@index');
 
-Route::get('rpgs/{id}', function ($id) {
-    return App\Rpg::find($id);
-});
+Route::middleware('auth:api')->get('rpgs/{id}/user', 'RpgController@show');
+
+Route::get('rpgs/{id}', 'RpgController@show');
+
+Route::middleware('auth:api')->get('rpgs/{id}/register', 'RpgController@register');
 
 Route::get('/rpgs/{id}/shops', function ($id) {
     return App\Rpg::with('shops.items.players.user')->where('id', $id)->first();
