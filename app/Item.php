@@ -8,6 +8,11 @@ class Item extends Model
 {
     protected $guarded = ['id'];
 
+    public function shop()
+    {
+        return $this->belongsTo('App\Shop');
+    }
+
     public function players() 
     {
         return $this->belongsToMany('App\Player', 'item_player', 'item_id', 'player_id')
