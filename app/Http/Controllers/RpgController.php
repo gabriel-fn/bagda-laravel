@@ -35,6 +35,7 @@ class RpgController extends Controller
 
     public function register($id, Request $request) 
     {
+        $response = ['error' => false, 'message' => 'Pedido de inscrição / desinscrição realizado com sucesso!'];
         if ($request->user()) {
             $rpg = Rpg::find($id);
             if ($rpg) {
@@ -48,20 +49,8 @@ class RpgController extends Controller
                         'image' => 'default.jpg',
                     ] 
                 ]);
-
-                $rpg = $request->user()->rpgs()->with(['master', 'shops.items.players.user', 'players' => function ($query) {
-                    $query->with(['items', 'user']);
-                }])->wherePivot('rpg_id', $id)->first();
-
-                if ($rpg) {
-                    $rpg->player->load('user');
-                    return $rpg;
-                } else {
-                    return Rpg::with(['master', 'shops.items.players.user', 'players' => function ($query) {
-                        $query->with(['items', 'user']);
-                    }])->where('id', $id)->first();
-                }
             }
         }
+        return $response;
     } 
 }

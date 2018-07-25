@@ -9,7 +9,7 @@ class ShopController extends Controller
 {
     public function buy($id, Request $request)
     {
-        $response = ['error' => false, 'message' => '', 'data' => null];
+        $response = ['error' => false, 'message' => ''];
     
         if (!$request->user()) {
             //Caso usuário não autenticado
@@ -48,38 +48,34 @@ class ShopController extends Controller
                                 $response['error'] = true;
                                 $response['message'] = 'Você não tem gold ou cash o suficiente para arcar com os custos deste item!';
                             } else {
-                                $item_player = $rpg->player->items()->wherePivot('item_id', $item->id)->first();
-    
-                                if ($item_player) {
-                                    //Caso o item já tenha sido comprado, irá validar o status da compra e talvez acrescentar uma unit
-                                    if (!$item_player->process->status) {
-                                        //Caso a compra já esteja em processo de avaliação
-                                        $response['error'] = true;
-                                        $response['message'] = 'Você já tem uma compra deste item sendo processada, aguarde até a sua primeira compra ser validada!';
-                                    } else {
-                                        $item_player->process->units += 1;
-                                        $item_player->process->save();
-    
-                                        $rpg->player->gold -= $item->gold_price;
-                                        $rpg->player->cash -= $item->cash_price;
-                                        $rpg->player->save();
-                                        $response['data'] = $request->user()->rpgs()->with(['master', 'shops.items.players.user', 'players' => function ($query) {
-                                            $query->with(['items', 'user']);
-                                        }])->wherePivot('rpg_id', $item->shop->rpg->id)->first();
-                                    }
-                                } else {
-                                    $rpg->player->items()->attach([
-                                        $item->id => [
-                                            'status' => !$item->require_test, 
-                                            'units' => 1,
-                                        ]
-                                    ]);
+                                if ($item->require_test) {
+                                    //Item requer aprovação. O dinheiro será retirado e, caso pedido seja desaprovado, devolvido.
+                                    $rpg->player->requests()->attach($item->id);
                                     $rpg->player->gold -= $item->gold_price;
                                     $rpg->player->cash -= $item->cash_price;
                                     $rpg->player->save();
-                                    $response['data'] = $request->user()->rpgs()->with(['master', 'shops.items.players.user', 'players' => function ($query) {
-                                        $query->with(['items', 'user']);
-                                    }])->wherePivot('rpg_id', $item->shop->rpg->id)->first();
+                                    $response['message'] = 'Seu pedido foi solicitado com sucesso, aguarde aprovação! Caso negado, seu dinheiro será devolvido!';
+                                } else {
+                                    $item_player = $rpg->player->items()->wherePivot('item_id', $item->id)->first();
+    
+                                    if ($item_player) {
+                                        //Caso o item já tenha sido comprado, irá acrescentar uma unit
+                                        $item_player->process->units += 1;
+                                        $item_player->process->save();
+        
+                                        $rpg->player->gold -= $item->gold_price;
+                                        $rpg->player->cash -= $item->cash_price;
+                                        $rpg->player->save();
+                                        $response['message'] = 'Compra realizada com sucesso!';
+                                        
+                                    } else {
+                                        //Caso não tenha outro item igual no inventário, será criado um novo relacionamento
+                                        $rpg->player->items()->attach([$item->id => ['units' => 1]]);
+                                        $rpg->player->gold -= $item->gold_price;
+                                        $rpg->player->cash -= $item->cash_price;
+                                        $rpg->player->save();
+                                        $response['message'] = 'Compra realizada com sucesso!';
+                                    }
                                 }
                             }
                         }
