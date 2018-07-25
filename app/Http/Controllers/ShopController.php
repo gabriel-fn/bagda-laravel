@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Item;
+use App\Shop;
 
 class ShopController extends Controller
 {
@@ -50,12 +51,27 @@ class ShopController extends Controller
                             } else {
                                 if ($item->require_test) {
                                     //Item requer aprovação. O dinheiro será retirado e, caso pedido seja desaprovado, devolvido.
-                                    $rpg->player->requests()->attach($item->id);
-                                    $rpg->player->gold -= $item->gold_price;
-                                    $rpg->player->cash -= $item->cash_price;
-                                    $rpg->player->save();
-                                    $response['message'] = 'Seu pedido foi solicitado com sucesso, aguarde aprovação! Caso negado, seu dinheiro será devolvido!';
+                                    $item_request = $rpg->player->requests()->wherePivot('item_id', $item->id)->first();
+                                    if ($item_request) {
+                                        //Caso a solicitação já exista!
+                                        $response['error'] = true;
+                                        $response['message'] = 'Um pedido similar já foi solicitado ao mestre. Aguarde a aprovação do primeiro.';
+                                    } else {
+                                        $rpg->player->requests()->attach($item->id);
+                                        $rpg->player->gold -= $item->gold_price;
+                                        $rpg->player->cash -= $item->cash_price;
+                                        $rpg->player->save();
+                                        $response['message'] = 'Seu pedido foi solicitado com sucesso, aguarde aprovação! Caso negado, seu dinheiro será devolvido!';
+                                    }
                                 } else {
+                                    if (!$item->shop->is_multiple_sale) {
+                                        //No caso da loja não aceitar que um player tenha mais de um item da mesma, apague todo vinculo que envolva os itens daquela loja.
+                                        $array_items_id = $item->shop->items()->get()->map(function($item) {
+                                            return $item->id;
+                                        });
+                                        $rpg->player->items()->detach($array_items_id);
+                                    }
+
                                     $item_player = $rpg->player->items()->wherePivot('item_id', $item->id)->first();
     
                                     if ($item_player) {
