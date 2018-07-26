@@ -13,8 +13,8 @@ class ItemsTableSeeder extends Seeder
     {
         App\Shop::find(1)->items()->saveMany([
             factory(App\Item::class)->make(['name' => 'Mercador']),
-            factory(App\Item::class)->make(['name' => 'Alfaiate']),
-            factory(App\Item::class)->make(['name' => 'Banqueiro']),
+            factory(App\Item::class)->make(['name' => 'Cavaleiro']),
+            factory(App\Item::class)->make(['name' => 'Arqueiro']),
         ]);
 
         App\Shop::find(2)->items()->saveMany([

@@ -3,10 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Rpg extends Model
 {
     protected $guarded = ['id'];
+
+    protected $appends = ['image'];
+
+    public function getImageAttribute() {
+        if (!Storage::exists('images/rpgs/'.$this->id.'.jpg')) {
+            return asset('storage/images/rpgs/default.jpg');
+        }
+        return asset('storage/images/rpgs/'.$this->id.'.jpg');
+    }
 
     public function shops()
     {

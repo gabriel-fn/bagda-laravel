@@ -20,12 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('image/path', function () {
-    $item = App\Item::find(15);
-    $item->load('shop.rpg');
-    $array_items_id = $item->shop->items()->get()->map(function($item) {
-        return $item->id;
-    });
-    return $array_items_id;
+
+    return asset('storage/images/rpgs');
 });
 
 Route::get('item/{id}/buy', function ($id) {
