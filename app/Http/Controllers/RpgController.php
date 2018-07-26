@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Rpg;
 
@@ -24,7 +25,7 @@ class RpgController extends Controller
             }])->wherePivot('rpg_id', $id)->first();
 
             if ($rpg) {
-                $rpg->player->load('user');
+                $rpg->player->load(['user', 'items', 'requests']);
                 return $rpg;
             }
         }
@@ -39,6 +40,11 @@ class RpgController extends Controller
         if ($request->user()) {
             $rpg = Rpg::find($id);
             if ($rpg) {
+                $player = $request->user()->players()->where('rpg_id', $rpg->id)->first();
+                if ($player) {
+                    Storage::delete('images/players/'.$player->id.'.jpg');
+                }
+
                 $credential = ($rpg->user_id === $request->user()->id)?4:$rpg->is_public;
                 $request->user()->rpgs()->toggle([
                     $rpg->id => [
