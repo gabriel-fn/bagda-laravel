@@ -11,9 +11,9 @@ class RpgController extends Controller
     public function index(Request $request)
     {
         if ($request->user()) {
-            return $request->user()->rpgs()->with('master')->get();
+            return $request->user()->rpgs()->with('master')->orderBy('name', 'asc')->get();
         } else {
-            return Rpg::with('master')->get();
+            return Rpg::with('master')->orderBy('name', 'asc')->get();
         }
     }
 

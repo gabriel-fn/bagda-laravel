@@ -29,6 +29,11 @@ Route::middleware('auth:api')->get('rpgs/{id}/register', 'RpgController@register
 
 Route::middleware('auth:api')->get('rpgs/items/{id}/buy', 'ShopController@buy');
 
+Route::middleware('auth:api')->put('rpgs/items/discard', 'PlayerController@discardItem');
+
+Route::middleware('auth:api')->put('rpgs/requests/dismiss', 'PlayerController@dismissRequest');
+
+
 /*Route::get('/rpgs/{id}/shops', function ($id) {
     return App\Rpg::with('shops.items.players.user')->where('id', $id)->first();
 });

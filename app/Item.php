@@ -32,6 +32,7 @@ class Item extends Model
 
     public function requests() 
     {
-        return $this->belongsToMany('App\Player', 'item_request', 'item_id', 'player_id');
+        return $this->belongsToMany('App\Player', 'item_request', 'item_id', 'player_id')
+                    ->as('process');
     }
 }

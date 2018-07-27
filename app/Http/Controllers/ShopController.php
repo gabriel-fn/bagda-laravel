@@ -50,19 +50,9 @@ class ShopController extends Controller
                                 $response['message'] = 'Você não tem gold ou cash o suficiente para arcar com os custos deste item!';
                             } else {
                                 if ($item->require_test) {
-                                    //Item requer aprovação. O dinheiro será retirado e, caso pedido seja desaprovado, devolvido.
-                                    $item_request = $rpg->player->requests()->wherePivot('item_id', $item->id)->first();
-                                    if ($item_request) {
-                                        //Caso a solicitação já exista!
-                                        $response['error'] = true;
-                                        $response['message'] = 'Um pedido similar já foi solicitado ao mestre. Aguarde a aprovação do primeiro.';
-                                    } else {
-                                        $rpg->player->requests()->attach($item->id);
-                                        $rpg->player->gold -= $item->gold_price;
-                                        $rpg->player->cash -= $item->cash_price;
-                                        $rpg->player->save();
-                                        $response['message'] = 'Seu pedido foi solicitado com sucesso, aguarde aprovação! Caso negado, seu dinheiro será devolvido!';
-                                    }
+                                    //Caso o item requer teste, será feito o pedido de compra para ser aprovado pelo mestre
+                                    $rpg->player->requests()->syncWithoutDetaching($item->id);
+                                    $response['message'] = 'Seu pedido foi solicitado com sucesso, aguarde aprovação! Caso negado, seu dinheiro será devolvido!';
                                 } else {
                                     if (!$item->shop->is_multiple_sale) {
                                         //No caso da loja não aceitar que um player tenha mais de um item da mesma, apague todo vinculo que envolva os itens daquela loja.
@@ -78,20 +68,14 @@ class ShopController extends Controller
                                         //Caso o item já tenha sido comprado, irá acrescentar uma unit
                                         $item_player->process->units += 1;
                                         $item_player->process->save();
-        
-                                        $rpg->player->gold -= $item->gold_price;
-                                        $rpg->player->cash -= $item->cash_price;
-                                        $rpg->player->save();
-                                        $response['message'] = 'Compra realizada com sucesso!';
-                                        
                                     } else {
                                         //Caso não tenha outro item igual no inventário, será criado um novo relacionamento
                                         $rpg->player->items()->attach([$item->id => ['units' => 1]]);
-                                        $rpg->player->gold -= $item->gold_price;
-                                        $rpg->player->cash -= $item->cash_price;
-                                        $rpg->player->save();
-                                        $response['message'] = 'Compra realizada com sucesso!';
                                     }
+                                    $rpg->player->gold -= $item->gold_price;
+                                    $rpg->player->cash -= $item->cash_price;
+                                    $rpg->player->save();
+                                    $response['message'] = 'Compra realizada com sucesso!';
                                 }
                             }
                         }

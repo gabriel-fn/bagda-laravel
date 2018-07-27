@@ -41,6 +41,7 @@ class Player extends Pivot
 
     public function requests()
     {
-        return $this->belongsToMany('App\Item', 'item_request', 'player_id', 'item_id');
+        return $this->belongsToMany('App\Item', 'item_request', 'player_id', 'item_id')
+                    ->as('process');
     }
 }
