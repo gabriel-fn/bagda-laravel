@@ -70,7 +70,7 @@ class PlayerController extends Controller
                     $response = ['error' => true, 'message' => 'O usuário não apresenta nenhum relacionamento com este rpg.'];
                 } else {
                     if ($user_request->player->id !== $player_id && $user_request->player->credential < 2) {
-                        //Caso o usuário que requisita o descarte não seja nem moderador e nem possuidor do item
+                        //Caso o usuário que requisita o cancelamento não seja nem moderador e dono do pedido
                         $response = ['error' => true, 'message' => 'O usuário não tem autoridade para cancelar este pedido!'];
                     } else {
                         $item->requests()->detach($player_id);

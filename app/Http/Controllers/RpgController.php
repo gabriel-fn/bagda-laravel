@@ -37,26 +37,25 @@ class RpgController extends Controller
     public function register($id, Request $request) 
     {
         $response = ['error' => false, 'message' => 'Pedido de inscrição / desinscrição realizado com sucesso!'];
-        if ($request->user()) {
-            $rpg = Rpg::find($id);
-            if ($rpg) {
-                $player = $request->user()->players()->where('rpg_id', $rpg->id)->first();
-                if ($player) {
-                    Storage::delete('images/players/'.$player->id.'.jpg');
-                }
-
-                $credential = ($rpg->user_id === $request->user()->id)?4:$rpg->is_public;
-                $request->user()->rpgs()->toggle([
-                    $rpg->id => [
-                        'credential' => $credential,
-                        'gold' => $rpg->gold_starter,
-                        'cash' => $rpg->cash_starter,
-                        'detail' => '',
-                        'image' => 'default.jpg',
-                    ] 
-                ]);
+        $rpg = Rpg::find($id);
+        if ($rpg) {
+            $player = $request->user()->players()->where('rpg_id', $rpg->id)->first();
+            if ($player) {
+                Storage::delete('images/players/'.$player->id.'.jpg');
             }
+
+            $credential = ($rpg->user_id === $request->user()->id)?4:$rpg->is_public;
+            $request->user()->rpgs()->toggle([
+                $rpg->id => [
+                    'credential' => $credential,
+                    'gold' => $rpg->gold_starter,
+                    'cash' => $rpg->cash_starter,
+                    'detail' => '',
+                    'image' => 'default.jpg',
+                ] 
+            ]);
         }
+        
         return $response;
     } 
 }
