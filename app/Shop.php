@@ -10,7 +10,8 @@ class Shop extends Model
 
     public function items()
     {
-        return $this->hasMany('App\Item');
+        return $this->hasMany('App\Item')
+                    ->orderBy('name', 'asc');
     }
 
     public function rpg()

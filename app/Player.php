@@ -35,7 +35,8 @@ class Player extends Pivot
     {
         return $this->belongsToMany('App\Item', 'item_player', 'player_id', 'item_id')
                     ->as('process')
-                    ->withPivot(['units']);
+                    ->withPivot(['units'])
+                    ->orderBy('name', 'asc');
     }
 
     public function requests()

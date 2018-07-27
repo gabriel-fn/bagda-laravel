@@ -20,12 +20,14 @@ class Rpg extends Model
 
     public function shops()
     {
-        return $this->hasMany('App\Shop');
+        return $this->hasMany('App\Shop')
+                    ->orderBy('name', 'asc');
     }
 
     public function items()
     {
-        return $this->hasManyThrough('App\Item', 'App\Shop');
+        return $this->hasManyThrough('App\Item', 'App\Shop')
+                    ->orderBy('name', 'asc');
     }
 
     public function master() 
