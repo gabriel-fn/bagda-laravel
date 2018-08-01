@@ -26,6 +26,7 @@ class Item extends Model
     public function players() 
     {
         return $this->belongsToMany('App\Player', 'item_player', 'item_id', 'player_id')
+                    ->withTimestamps()
                     ->as('process')
                     ->withPivot(['units']);
     }
@@ -33,6 +34,7 @@ class Item extends Model
     public function requests() 
     {
         return $this->belongsToMany('App\Player', 'item_request', 'item_id', 'player_id')
+                    ->withTimestamps()
                     ->as('process');
     }
 }

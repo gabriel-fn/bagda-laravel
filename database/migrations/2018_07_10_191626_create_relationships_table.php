@@ -16,6 +16,7 @@ class CreateRelationshipsTable extends Migration
         Schema::create('item_request', function (Blueprint $table) {
             $table->unsignedInteger('item_id');
             $table->unsignedInteger('player_id');
+            $table->timestamps();
 
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('player_id')->references('id')->on('players')->onDelete('cascade');
@@ -25,6 +26,7 @@ class CreateRelationshipsTable extends Migration
             $table->unsignedInteger('item_id');
             $table->unsignedInteger('player_id');
             $table->unsignedInteger('units');
+            $table->timestamps();
 
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
             $table->foreign('player_id')->references('id')->on('players')->onDelete('cascade');

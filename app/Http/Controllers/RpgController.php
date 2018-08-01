@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateRpg;
 use App\Rpg;
+use App\Player;
 
 class RpgController extends Controller
 {
@@ -21,7 +23,7 @@ class RpgController extends Controller
     {
         if ($request->user()) {
             $rpg = $request->user()->rpgs()->with(['master', 'shops.items.players.user', 'players' => function ($query) {
-                $query->with(['items', 'user']);
+                $query->with(['items', 'user', 'requests']);
             }])->wherePivot('rpg_id', $id)->first();
 
             if ($rpg) {
@@ -30,8 +32,18 @@ class RpgController extends Controller
             }
         }
         return Rpg::with(['master', 'shops.items.players.user', 'players' => function ($query) {
-            $query->with(['items', 'user']);
+            $query->with(['items', 'user', 'requests']);
         }])->where('id', $id)->first();
+    }
+
+    public function update(UpdateRpg $request) {
+        $response = ['error' => false, 'message' => 'Rpg atualizado com sucesso!'];
+        $rpg = Rpg::findOrFail($request->rpg_id);
+        $rpg->update($request->only('name', 'gold_starter', 'cash_starter', 'is_public'));
+        if ($request->has('image')) {
+            $request->file('image')->storeAs('images/rpgs', $rpg->id.'.jpg');
+        }
+        return $response;
     }
 
     public function register($id, Request $request) 
@@ -55,7 +67,19 @@ class RpgController extends Controller
                 ] 
             ]);
         }
-        
         return $response;
     } 
+
+    public function registerResponse(Request $request) 
+    {
+        $response = ['error' => false, 'message' => 'Pedido de inscrição avaliado com sucesso!'];
+        $player = Player::findOrFail($request->player_id);
+        if ($request->accept) {
+            $player->credential = 1;
+            $player->save();
+        } else {
+            $player->delete();
+        }
+        return $response;
+    }
 }
