@@ -14,8 +14,7 @@ class UpdateRpg extends FormRequest
      */
     public function authorize()
     {
-        $rpg = Rpg::find($this->rpg_id);
-        return $rpg && $this->user()->can('update', $rpg);
+        return true;
     }
 
     /**
@@ -38,7 +37,7 @@ class UpdateRpg extends FormRequest
     public function messages() 
     {
         return [
-            'rpg_id.exists' => 'Rpg não encontrado! Você tentou atualizar um rpg inexistente.', 
+            'rpg_id.exists' => 'Rpg não encontrado!', 
             'name.required' => 'O nome do rpg não pode ficar em branco!',
             'name.string' => 'O nome do rpg não está em um formato valido!',
             'name.between' => 'O nome do rpg deve ter entre 5 e 25 caracteres!',

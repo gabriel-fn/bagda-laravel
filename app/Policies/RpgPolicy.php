@@ -12,10 +12,12 @@ class RpgPolicy
 
     public function update(User $user, Rpg $rpg)
     {
-        $player = $rpg->players()->where('user_id', $user->id)->first();
-        if ($player) {
-            if ($player->credential > 2) {
-                return true;
+        if ($user && $rpg) {
+            $player = $rpg->players()->where('user_id', $user->id)->first();
+            if ($player) {
+                if ($player->credential > 2) {
+                    return true;
+                }
             }
         }
         return false;

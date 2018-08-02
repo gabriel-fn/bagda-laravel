@@ -39,6 +39,7 @@ class RpgController extends Controller
     public function update(UpdateRpg $request) {
         $response = ['error' => false, 'message' => 'Rpg atualizado com sucesso!'];
         $rpg = Rpg::findOrFail($request->rpg_id);
+        $this->authorize('update', $rpg);
         $rpg->update($request->only('name', 'gold_starter', 'cash_starter', 'is_public'));
         if ($request->has('image')) {
             $request->file('image')->storeAs('images/rpgs', $rpg->id.'.jpg');
