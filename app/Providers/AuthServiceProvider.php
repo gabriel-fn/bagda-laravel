@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Rpg;
 use App\Policies\RpgPolicy;
+use App\Player;
+use App\Policies\PlayerPolicy;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Rpg::class => RpgPolicy::class,
+        Player::class => PlayerPolicy::class,
     ];
 
     /**

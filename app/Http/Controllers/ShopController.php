@@ -18,7 +18,7 @@ class ShopController extends Controller
         $item->load('shop.rpg');
         $rpg = Rpg::findOrFail($item->shop->rpg->id);
 
-        $this->authorize('buy', $rpg);
+        $this->authorize('player', $rpg);
 
         $players_with_item = $item->players()->get();
         $total_units = $players_with_item->reduce(function($total, $player) {
