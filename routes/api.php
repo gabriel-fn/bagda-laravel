@@ -29,7 +29,7 @@ Route::middleware('auth:api')->get('rpgs/{id}/register', 'RpgController@register
 
 Route::middleware('auth:api')->post('rpgs/register/response', 'RpgController@registerResponse');
 
-Route::middleware('auth:api')->get('rpgs/items/{id}/buy', 'ShopController@buy');
+Route::middleware('auth:api')->put('rpgs/items/buy', 'ShopController@buy');
 
 Route::middleware('auth:api')->put('rpgs/items/discard', 'PlayerController@discardItem');
 

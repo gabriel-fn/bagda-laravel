@@ -11,18 +11,6 @@ class RpgPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the rpg.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Rpg  $rpg
-     * @return mixed
-     */
-    public function view(User $user, Rpg $rpg)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can create rpgs.
      *
      * @param  \App\User  $user
@@ -61,5 +49,19 @@ class RpgPolicy
     public function delete(User $user, Rpg $rpg)
     {
         //
+    }
+
+    public function buy(User $user, Rpg $rpg) 
+    {
+        $rpg_with_player = $user->rpgs()->wherePivot('rpg_id', $rpg->id)->first();
+        if (!$rpg_with_player) {
+            return false;
+        } else {
+            if ($rpg_with_player->player->credential) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 }
