@@ -53,15 +53,14 @@ class RpgPolicy
 
     public function buy(User $user, Rpg $rpg) 
     {
-        $rpg_with_player = $user->rpgs()->wherePivot('rpg_id', $rpg->id)->first();
-        if (!$rpg_with_player) {
-            return false;
-        } else {
-            if ($rpg_with_player->player->credential) {
-                return false;
-            } else {
-                return true;
+        if ($user && $rpg) {
+            $rpg_with_player = $user->rpgs()->wherePivot('rpg_id', $rpg->id)->first();
+            if ($rpg_with_player) {
+                if ($rpg_with_player->player->credential > 0) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 }
