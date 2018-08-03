@@ -51,7 +51,10 @@ class RpgController extends Controller
     {
         $response = ['error' => false, 'message' => 'Pedido de inscrição / desinscrição realizado com sucesso!'];
         $rpg = Rpg::find($id);
-        if ($rpg) {
+        if (!$rpg) {
+            $response['error'] = true;
+            $response['message'] = 'Rpg não encontrado!';
+        } else {    
             $player = $request->user()->players()->where('rpg_id', $rpg->id)->first();
             if ($player) {
                 Storage::delete('images/players/'.$player->id.'.jpg');
