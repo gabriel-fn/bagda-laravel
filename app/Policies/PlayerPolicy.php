@@ -15,7 +15,20 @@ class PlayerPolicy
         if ($user && $player) {
             $user_player = $user->rpgs()->wherePivot('rpg_id', $player->rpg_id)->first();
             if ($user_player) {
-                if ($user_player->player->id === $player->id || $user_player->player->credential > 1) {
+                if ($user_player->player->id === $player->id || ($user_player->player->credential > 1 && $user_player->player->credential > $player->credential)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function update(User $user, Player $player) 
+    {
+        if ($user && $player) {
+            $user_player = $user->rpgs()->wherePivot('rpg_id', $player->rpg_id)->first();
+            if ($user_player) {
+                if ($user_player->player->credential > 1 && $user_player->player->credential > $player->credential) {
                     return true;
                 }
             }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rpg;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRpg extends FormRequest
