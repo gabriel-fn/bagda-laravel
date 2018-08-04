@@ -23,6 +23,6 @@ class UsersTableSeeder extends Seeder
             'authority' => 1,
         ]);
 
-        factory(App\User::class, 5)->create();
+        factory(App\User::class, 58)->create();
     }
 }

@@ -16,7 +16,6 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('shop_id');
-            $table->string('image');
             $table->string('name');
             $table->text('detail');
             $table->unsignedInteger('gold_price');

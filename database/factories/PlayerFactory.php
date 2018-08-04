@@ -8,6 +8,5 @@ $factory->define(App\Player::class, function (Faker $faker) {
         'gold' => 0,
         'cash' => 0,
         'detail' => $faker->text,
-        'image' => 'default.jpg',
     ];
 });

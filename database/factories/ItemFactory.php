@@ -4,7 +4,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Item::class, function (Faker $faker) {
     return [
-        'image' => 'default.jpg',
         'name' => $faker->sentence(2, true),
         'detail' => $faker->text,
         'gold_price' => rand(100, 1000),
