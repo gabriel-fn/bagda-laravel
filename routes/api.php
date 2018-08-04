@@ -37,6 +37,7 @@ Route::middleware('auth:api')->put('rpgs/requests/dismiss', 'PlayerController@di
 
 Route::middleware('auth:api')->post('rpgs/update', 'RpgController@update');
 
+Route::middleware('auth:api')->post('players/update', 'PlayerController@update');
 
 /*Route::get('/rpgs/{id}/shops', function ($id) {
     return App\Rpg::with('shops.items.players.user')->where('id', $id)->first();
