@@ -27,7 +27,7 @@ class UpdatePlayer extends FormRequest
             'player_id' => 'exists:players,id',
             'gold' => 'required|integer|min:0',
             'cash' => 'required|integer|min:0',
-            'credential' => 'required|integer|between:0,3',
+            'credential' => 'required|integer|between:0,4',
             'detail' => 'nullable|string|max:5000',
             'image' => 'nullable|file|image',
         ];

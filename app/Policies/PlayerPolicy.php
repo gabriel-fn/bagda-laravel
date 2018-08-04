@@ -28,7 +28,7 @@ class PlayerPolicy
         if ($user && $player) {
             $user_player = $user->rpgs()->wherePivot('rpg_id', $player->rpg_id)->first();
             if ($user_player) {
-                if ($user_player->player->credential > 1 && $user_player->player->credential > $player->credential) {
+                if ($user_player->player->credential > 1 && ($user_player->player->credential == 4 || $user_player->player->credential > $player->credential)) {
                     return true;
                 }
             }
