@@ -4,13 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemPlayer;
+use App\Http\Requests\UpdatePlayer;
 use App\Item;
 use App\Player;
 use App\Rpg;
 
 class PlayerController extends Controller
 {
-    public function discardItem(ItemPlayer $request) {
+    public function update(UpdatePlayer $request) 
+    {
+        $response = ['error' => false, 'message' => 'Jogador atualizado com sucesso!'];
+        $player = Player::findOrFail($request->player_id);
+        $this->authorize('update', $player);
+        $player->update($request->only('credential', 'gold', 'cash', 'detail'));
+        if ($request->has('image')) {
+            $request->file('image')->storeAs('images/players', $player->id.'.jpg');
+        }
+        return $response;
+    }
+
+    public function discardItem(ItemPlayer $request) 
+    {
         $response = ['error' => false, 'message' => 'Item descartado com sucesso.'];
     
         $item = Item::findOrFail($request->item_id);
@@ -34,7 +48,8 @@ class PlayerController extends Controller
         return $response; 
     }
 
-    public function dismissRequest(ItemPlayer $request) {
+    public function dismissRequest(ItemPlayer $request) 
+    {
         $response = ['error' => false, 'message' => 'Pedido cancelado com sucesso.'];
         
         $item = Item::findOrFail($request->item_id);
