@@ -57,7 +57,7 @@ class RpgController extends Controller
         } else {    
             $player = $request->user()->players()->where('rpg_id', $rpg->id)->first();
             if ($player) {
-                Storage::delete('images/players/'.$player->id.'.jpg');
+                //Storage::delete('images/players/'.$player->id.'.jpg');
             }
 
             $credential = ($rpg->user_id === $request->user()->id)?4:$rpg->is_public;
@@ -67,7 +67,6 @@ class RpgController extends Controller
                     'gold' => $rpg->gold_starter,
                     'cash' => $rpg->cash_starter,
                     'detail' => '',
-                    'image' => 'default.jpg',
                 ] 
             ]);
         }

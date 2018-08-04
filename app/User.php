@@ -33,7 +33,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Rpg', 'players')
                     ->withTimeStamps()
                     ->as('player')
-                    ->withPivot('credential', 'gold', 'cash', 'detail', 'id', 'image')
+                    ->withPivot('credential', 'gold', 'cash', 'detail', 'id')
                     ->using('App\Player');
     }
 

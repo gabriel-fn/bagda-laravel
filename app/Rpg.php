@@ -44,7 +44,7 @@ class Rpg extends Model
         return $this->belongsToMany('App\User', 'players')
                     ->withTimeStamps()
                     ->as('player')
-                    ->withPivot('credential', 'gold', 'cash', 'detail', 'id', 'image')
+                    ->withPivot('credential', 'gold', 'cash', 'detail', 'id')
                     ->using('App\Player');
     }
 }
