@@ -48,8 +48,8 @@ class UpdatePlayer extends FormRequest
             'credential.between' => 'A credential que você tentou utilizar não existe!',
             'detail.string' => 'Os detalhes do jogador não estão em um formato valido!',
             'detail.max' => 'Os detalhes do jogador tem um limite de 5000 caracteres!',
-            'image.file' => 'Ao fornecer a capa, verifique se está fornecendo um arquivo!',
-            'image.image' => 'Ao fornecer a capa, verifique se está fornecendo uma image!',
+            'image.file' => 'Ao fornecer a imagem, verifique se está fornecendo um arquivo!',
+            'image.image' => 'Ao fornecer a imagem, verifique se está fornecendo uma imagem!',
         ];
     }
 }
