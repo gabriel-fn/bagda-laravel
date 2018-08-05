@@ -46,8 +46,8 @@ class UpdateRpg extends FormRequest
             'cash_starter.required' => 'O cash inicial não pode ficar em branco!',
             'cash_starter.integer' => 'O cash inicial tem que ser um número inteiro!',
             'cash_starter.min' => 'O cash inicial tem que ter um valor maior ou igual a 0!',
-            'is_public.required' => 'Deve informar de o rpg é público ou não!',
-            'is_public.boolean' => 'Deve informar de o rpg é público ou não!',
+            'is_public.required' => 'Deve informar se o rpg é público ou não!',
+            'is_public.boolean' => 'Deve informar se o rpg é público ou não!',
             'image.file' => 'Ao fornecer a capa, verifique se está fornecendo um arquivo!',
             'image.image' => 'Ao fornecer a capa, verifique se está fornecendo uma image!',
         ];

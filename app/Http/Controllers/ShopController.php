@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\BuyShop;
 use App\Http\Requests\UpdateItem;
+use App\Http\Requests\CreateShop;
 use App\Item;
 use App\Shop;
 use App\Rpg;
@@ -23,6 +24,19 @@ class ShopController extends Controller
         if ($request->has('image')) {
             $request->file('image')->storeAs('images/items', $item->id.'.jpg');
         }
+        return $response;
+    }
+
+    public function createShop(CreateShop $request)
+    {
+        $response = ['error' => false, 'message' => 'Loja criada com sucesso!'];
+        $rpg = Rpg::findOrFail($request->rpg_id);
+
+        $this->authorize('update', $rpg);
+        $rpg->shops()->create([
+            'name' => $request->name,
+            'is_multiple_sale' => $request->is_multiple_sale,
+        ]);
         return $response;
     }
 
