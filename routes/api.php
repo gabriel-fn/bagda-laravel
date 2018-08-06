@@ -43,12 +43,4 @@ Route::middleware('auth:api')->post('items/update', 'ShopController@updateItem')
 
 Route::middleware('auth:api')->put('rpgs/shops/create', 'ShopController@createShop');
 
-/*Route::get('/rpgs/{id}/shops', function ($id) {
-    return App\Rpg::with('shops.items.players.user')->where('id', $id)->first();
-});
-
-Route::get('/rpgs/{id}/players', function ($id) {
-    return App\Rpg::with(['players' => function ($query) {
-        $query->with(['items', 'user']);
-    }])->where('id', $id)->first();
-});*/
+Route::middleware('auth:api')->put('rpgs/shops/items/create', 'ShopController@createItem');
