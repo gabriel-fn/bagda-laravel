@@ -37,4 +37,19 @@ class ItemController extends Controller
         }
         return $response;
     }
+
+    public function delete($id) 
+    {
+        $response = ['error' => false, 'message' => 'Item deletado com sucesso!'];
+        $item = Item::findOrFail($id);
+        if (!$item) {
+            $response = ['error' => true, 'message' => 'Item não encontrado!'];
+        } else {
+            $item->load('shop.rpg');
+            $rpg = Rpg::findOrFail($item->shop->rpg->id);
+            $this->authorize('update', $rpg);
+            $item->delete();
+        }
+        return $response;
+    }
 }

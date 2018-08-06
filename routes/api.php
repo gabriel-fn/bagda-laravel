@@ -49,6 +49,7 @@ Route::middleware('auth:api')->prefix('rpgs')->group(function () {
         Route::prefix('items')->group(function () {
             Route::post('update', 'ItemController@update');
             Route::put('create', 'ItemController@create');
+            Route::delete('delete/{id}', 'ItemController@delete');
         });
     });
 
