@@ -24,6 +24,25 @@ class ShopController extends Controller
         return $response;
     }
 
+    public function delete($id) 
+    {
+        /*Validator::make($request->all(),
+                        ['shop_id' => 'exists:shops,id'], 
+                        ['shop_id.exists' => 'Loja não encontrada!'])->validate();*/
+
+        $response = ['error' => false, 'message' => 'Loja deletada com sucesso!'];
+        $shop = Shop::findOrFail($id);
+        if (!$shop) {
+            $response = ['error' => true, 'message' => 'Loja não encontrada!'];
+        } else {
+            $shop->load('rpg');
+            $rpg = Rpg::findOrFail($shop->rpg->id);
+            $this->authorize('player', $rpg);
+            $shop->delete();
+        }
+        return $response;
+    }
+
     public function buy(Request $request)
     {
         Validator::make($request->all(), 
