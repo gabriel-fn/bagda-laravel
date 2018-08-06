@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
-use App\Http\Requests\BuyShop;
 use App\Http\Requests\CreateShop;
 use App\Item;
 use App\Shop;
@@ -24,8 +24,12 @@ class ShopController extends Controller
         return $response;
     }
 
-    public function buy(BuyShop $request)
+    public function buy(Request $request)
     {
+        Validator::make($request->all(), 
+                        ['item_id' => 'exists:items,id'], 
+                        ['item_id.exists' => 'Item não encontrado!'])->validate();
+
         $response = ['error' => false, 'message' => 'Compra realizada com sucesso!'];
 
         $item = Item::findOrFail($request->item_id);
