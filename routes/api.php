@@ -40,6 +40,7 @@ Route::middleware('auth:api')->prefix('rpgs')->group(function () {
 
     Route::prefix('players')->group(function () {
         Route::post('update', 'PlayerController@update');
+        Route::delete('delete/{id}', 'PlayerController@delete');
     });
 
     Route::prefix('shops')->group(function () {

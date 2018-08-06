@@ -23,6 +23,19 @@ class PlayerController extends Controller
         return $response;
     }
 
+    public function delete($id) 
+    {
+        $response = ['error' => false, 'message' => 'Jogador deletado com sucesso!'];
+        $player = Player::findOrFail($id);
+        if (!$player) {
+            $response = ['error' => true, 'message' => 'Jogador não encontrado!'];
+        } else {
+            $this->authorize('update', $player);
+            $player->delete();
+        }
+        return $response;
+    }
+
     public function discardItem(ItemPlayer $request) 
     {
         $response = ['error' => false, 'message' => 'Item descartado com sucesso.'];
