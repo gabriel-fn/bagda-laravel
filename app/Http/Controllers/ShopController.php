@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\BuyShop;
-use App\Http\Requests\CreateItem;
-use App\Http\Requests\UpdateItem;
 use App\Http\Requests\CreateShop;
 use App\Item;
 use App\Shop;
@@ -13,34 +11,7 @@ use App\Rpg;
 
 class ShopController extends Controller
 {
-    public function createItem(CreateItem $request) 
-    {
-        $response = ['error' => false, 'message' => 'Item criado com sucesso!'];
-        $shop = Shop::findOrFail($request->shop_id);
-        $shop->load('rpg');
-        $rpg = Rpg::findOrFail($shop->rpg->id);
-
-        $this->authorize('update', $rpg);
-        $shop->items()->create($request->only('name', 'gold_price', 'cash_price', 'max_units', 'require_test', 'detail'));
-        return $response;
-    }
-
-    public function updateItem(UpdateItem $request)
-    {
-        $response = ['error' => false, 'message' => 'Item atualizado com sucesso!'];
-        $item = Item::findOrFail($request->item_id);
-        $item->load('shop.rpg');
-        $rpg = Rpg::findOrFail($item->shop->rpg->id);
-
-        $this->authorize('update', $rpg);
-        $item->update($request->only('name', 'gold_price', 'cash_price', 'max_units', 'require_test', 'detail'));
-        if ($request->has('image')) {
-            $request->file('image')->storeAs('images/items', $item->id.'.jpg');
-        }
-        return $response;
-    }
-
-    public function createShop(CreateShop $request)
+    public function create(CreateShop $request)
     {
         $response = ['error' => false, 'message' => 'Loja criada com sucesso!'];
         $rpg = Rpg::findOrFail($request->rpg_id);

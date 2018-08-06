@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/rpgs/user', 'RpgController@index');
+Route::middleware('auth:api')->get('rpgs/user', 'RpgController@index');
 
 Route::get('rpgs', 'RpgController@index');
 
@@ -35,12 +35,20 @@ Route::middleware('auth:api')->put('rpgs/items/discard', 'PlayerController@disca
 
 Route::middleware('auth:api')->put('rpgs/requests/dismiss', 'PlayerController@dismissRequest');
 
-Route::middleware('auth:api')->post('rpgs/update', 'RpgController@update');
+Route::middleware('auth:api')->prefix('rpgs')->group(function () {
+    Route::post('update', 'RpgController@update');
 
-Route::middleware('auth:api')->post('players/update', 'PlayerController@update');
+    Route::prefix('players')->group(function () {
+        Route::post('update', 'PlayerController@update');
+    });
 
-Route::middleware('auth:api')->post('items/update', 'ShopController@updateItem');
+    Route::prefix('shops')->group(function () {
+        Route::put('create', 'ShopController@create');
 
-Route::middleware('auth:api')->put('rpgs/shops/create', 'ShopController@createShop');
+        Route::prefix('items')->group(function () {
+            Route::post('update', 'ItemController@update');
+            Route::put('create', 'ItemController@create');
+        });
+    });
 
-Route::middleware('auth:api')->put('rpgs/shops/items/create', 'ShopController@createItem');
+});
