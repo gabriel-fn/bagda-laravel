@@ -74,7 +74,9 @@ class PlayerController extends Controller
         $this->authorize('inventary', $player);
 
         $item->requests()->detach($player->id);
-
+        
+        $player->load('items', 'user', 'requests');
+        $response['data'] = $player; 
         return $response; 
     }
 }
