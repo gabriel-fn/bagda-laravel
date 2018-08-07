@@ -35,6 +35,8 @@ Route::middleware('auth:api')->put('rpgs/items/discard', 'PlayerController@disca
 
 Route::middleware('auth:api')->put('rpgs/requests/dismiss', 'PlayerController@dismissRequest');
 
+Route::middleware('auth:api')->put('rpgs/requests/approve', 'PlayerController@approveRequest');
+
 Route::middleware('auth:api')->prefix('rpgs')->group(function () {
     Route::post('update', 'RpgController@update');
 
