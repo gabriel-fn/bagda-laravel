@@ -58,6 +58,8 @@ class PlayerController extends Controller
                 $player_item->items()->detach($item->id);
             }
         }
+        $player->load('items', 'user', 'requests');
+        $response['data'] = $player; 
         return $response; 
     }
 
