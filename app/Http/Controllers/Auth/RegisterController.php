@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -49,9 +49,24 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|between:1,25|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|between:4,12|confirmed',
+        ],
+        [
+            'name.required' => 'O nome deve estar preenchido!',
+            'name.string' => 'O nome deve estar em um formato valido!',
+            'name.between' => 'O nome deve ter entre 1 e 25 caracteres!',
+            'name.unique' => 'Este nome já registrado!',
+            'email.required' => 'O email deve estar preenchido!',
+            'email.string' => 'O email deve estar em um formato valido!',
+            'email.email' => 'O email deve estar em um formato valido!',
+            'email.max' => 'O email deve ter no máximo 255 caracteres!',
+            'email.unique' => 'Este e-mail já registrado!',
+            'password.required' => 'A senha deve estar preenchida!',
+            'password.string' => 'A senha deve estar em um formato valido!',
+            'password.between' => 'A senha deve ter entre 4 e 12 caracteres!',
+            'password.confirmed' => 'A senha e sua confirmação estão diferentes!',
         ]);
     }
 
