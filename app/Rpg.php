@@ -11,11 +11,18 @@ class Rpg extends Model
 
     protected $appends = ['image'];
 
+    public function makeDirectory()
+    {
+        if (!Storage::exists('images/rpgs/'.$this->id)) {
+            Storage::makeDirectory('images/rpgs/'.$this->id);
+        }
+    }
+
     public function getImageAttribute() {
-        if (!Storage::exists('images/rpgs/'.$this->id.'.jpg')) {
+        if (!Storage::exists('images/rpgs/'.$this->id.'/'.$this->id.'.jpg')) {
             return asset('storage/images/rpgs/default.jpg');
         }
-        return asset('storage/images/rpgs/'.$this->id.'.jpg');
+        return asset('storage/images/rpgs/'.$this->id.'/'.$this->id.'.jpg');
     }
 
     public function shops()

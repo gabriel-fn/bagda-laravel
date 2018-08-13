@@ -27,7 +27,7 @@ class ShopController extends Controller
     public function delete($id) 
     {
         $response = ['error' => false, 'message' => 'Loja deletada com sucesso!'];
-        $shop = Shop::findOrFail($id);
+        $shop = Shop::find($id);
         if (!$shop) {
             $response = ['error' => true, 'message' => 'Loja não encontrada!'];
         } else {
@@ -35,6 +35,7 @@ class ShopController extends Controller
             $rpg = Rpg::findOrFail($shop->rpg->id);
             $this->authorize('update', $rpg);
             $shop->delete();
+            $shop->deleteDirectory();
         }
         return $response;
     }

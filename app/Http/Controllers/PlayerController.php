@@ -18,7 +18,8 @@ class PlayerController extends Controller
         $this->authorize('update', $player);
         $player->update($request->only('credential', 'gold', 'cash', 'detail'));
         if ($request->has('image')) {
-            $request->file('image')->storeAs('images/players', $player->id.'.jpg');
+            $player->makeDirectory();
+            $request->file('image')->storeAs('images/rpgs/'.$player->rpg->id.'/players', $player->id.'.jpg');
         }
         return $response;
     }
@@ -26,12 +27,13 @@ class PlayerController extends Controller
     public function delete($id) 
     {
         $response = ['error' => false, 'message' => 'Jogador deletado com sucesso!'];
-        $player = Player::findOrFail($id);
+        $player = Player::find($id);
         if (!$player) {
             $response = ['error' => true, 'message' => 'Jogador não encontrado!'];
         } else {
             $this->authorize('update', $player);
             $player->delete();
+            $player->deleteImage();
         }
         return $response;
     }

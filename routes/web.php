@@ -19,15 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('image/path', function () {
-
-    return asset('storage/images/rpgs');
-});
-
-Route::get('item/discard', function () {
-    $item = App\Item::with(['shop.rpg', 'players' => function ($query) {
-        $query->where('player_id', 1);
-    }])->where('id', 17)->first();
-
-    return $item;
+Route::get('make/rpg/{senha}', function ($senha) {
+    if ($senha == 'spsp1010') {
+        factory(App\Rpg::class)->create([
+            'name' => 'Rpg sem nome', 
+            'is_public' => false,
+            'user_id' => 1
+        ]);
+    }
 });

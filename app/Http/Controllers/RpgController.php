@@ -42,7 +42,8 @@ class RpgController extends Controller
         $this->authorize('update', $rpg);
         $rpg->update($request->only('name', 'gold_starter', 'cash_starter', 'is_public'));
         if ($request->has('image')) {
-            $request->file('image')->storeAs('images/rpgs', $rpg->id.'.jpg');
+            $rpg->makeDirectory();
+            $request->file('image')->storeAs('images/rpgs/'.$rpg->id, $rpg->id.'.jpg');
         }
         return $response;
     }
@@ -57,7 +58,7 @@ class RpgController extends Controller
         } else {    
             $player = $request->user()->players()->where('rpg_id', $rpg->id)->first();
             if ($player) {
-                //Storage::delete('images/players/'.$player->id.'.jpg');
+                $player->deleteImage();
             }
 
             $credential = ($rpg->user_id === $request->user()->id)?4:$rpg->is_public;
@@ -76,12 +77,19 @@ class RpgController extends Controller
     public function registerResponse(Request $request) 
     {
         $response = ['error' => false, 'message' => 'Pedido de inscrição avaliado com sucesso!'];
-        $player = Player::findOrFail($request->player_id);
-        if ($request->accept) {
-            $player->credential = 1;
-            $player->save();
-        } else {
-            $player->delete();
+        $player = Player::find($request->player_id);
+        if (!$player) {
+            $response['error'] = true;
+            $response['message'] = 'Jogador não encontrado!';
+        } else {    
+            $this->authorize('update', $player);
+            if ($request->accept) {
+                $player->credential = 1;
+                $player->save();
+            } else {
+                $player->delete();
+                $player->deleteImage();
+            }
         }
         return $response;
     }

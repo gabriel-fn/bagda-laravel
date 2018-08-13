@@ -14,11 +14,25 @@ class Player extends Pivot
 
     protected $appends = ['image', 'name', 'request_number'];
 
-    public function getImageAttribute() {
-        if (!Storage::exists('images/players/'.$this->id.'.jpg')) {
-            return asset('storage/images/players/default.jpg');
+    public function makeDirectory()
+    {
+        if (!Storage::exists('images/rpgs/'.$this->rpg->id.'/players')) {
+            Storage::makeDirectory('images/rpgs/'.$this->rpg->id.'/players');
         }
-        return asset('storage/images/players/'.$this->id.'.jpg');
+    }
+
+    public function deleteImage() 
+    {
+        if (Storage::exists('images/rpgs/'.$this->rpg->id.'/players/'.$this->id.'.jpg')) {
+            Storage::delete('images/rpgs/'.$this->rpg->id.'/players/'.$this->id.'.jpg');
+        }
+    }
+
+    public function getImageAttribute() {
+        if (!Storage::exists('images/rpgs/'.$this->rpg->id.'/players/'.$this->id.'.jpg')) {
+            return asset('storage/images/default.jpg');
+        }
+        return asset('storage/images/rpgs/'.$this->rpg->id.'/players/'.$this->id.'.jpg');
     }
 
     public function getNameAttribute() {

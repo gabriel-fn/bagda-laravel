@@ -11,11 +11,25 @@ class Item extends Model
 
     protected $appends = ['image'];
 
-    public function getImageAttribute() {
-        if (!Storage::exists('images/items/'.$this->id.'.jpg')) {
-            return asset('storage/images/items/default.jpg');
+    public function deleteImage()
+    {
+        if (Storage::exists('images/rpgs/'.$this->shop->rpg->id.'/shops/'.$this->shop->id.'/'.$this->id.'.jpg')) {
+            Storage::delete('images/rpgs/'.$this->shop->rpg->id.'/shops/'.$this->shop->id.'/'.$this->id.'.jpg');
         }
-        return asset('storage/images/items/'.$this->id.'.jpg');
+    }
+
+    public function makeDirectory()
+    {
+        if (!Storage::exists('images/rpgs/'.$this->shop->rpg->id.'/shops/'.$this->shop->id)) {
+            Storage::makeDirectory('images/rpgs/'.$this->shop->rpg->id.'/shops/'.$this->shop->id);
+        }
+    }
+
+    public function getImageAttribute() {
+        if (!Storage::exists('images/rpgs/'.$this->shop->rpg->id.'/shops/'.$this->shop->id.'/'.$this->id.'.jpg')) {
+            return asset('storage/images/default.jpg');
+        }
+        return asset('storage/images/rpgs/'.$this->shop->rpg->id.'/shops/'.$this->shop->id.'/'.$this->id.'.jpg');
     }
 
     public function shop()

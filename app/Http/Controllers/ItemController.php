@@ -33,7 +33,8 @@ class ItemController extends Controller
         $this->authorize('update', $rpg);
         $item->update($request->only('name', 'gold_price', 'cash_price', 'max_units', 'require_test', 'detail'));
         if ($request->has('image')) {
-            $request->file('image')->storeAs('images/items', $item->id.'.jpg');
+            $item->makeDirectory();
+            $request->file('image')->storeAs('images/rpgs/'.$item->shop->rpg->id.'/shops/'.$item->shop->id, $item->id.'.jpg');
         }
         return $response;
     }
@@ -41,7 +42,7 @@ class ItemController extends Controller
     public function delete($id) 
     {
         $response = ['error' => false, 'message' => 'Item deletado com sucesso!'];
-        $item = Item::findOrFail($id);
+        $item = Item::find($id);
         if (!$item) {
             $response = ['error' => true, 'message' => 'Item não encontrado!'];
         } else {
@@ -49,6 +50,7 @@ class ItemController extends Controller
             $rpg = Rpg::findOrFail($item->shop->rpg->id);
             $this->authorize('update', $rpg);
             $item->delete();
+            $item->deleteImage();
         }
         return $response;
     }

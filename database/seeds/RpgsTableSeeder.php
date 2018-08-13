@@ -26,9 +26,10 @@ class RpgsTableSeeder extends Seeder
             ])
         );
 
-        App\User::all()->each(function ($user) {
+        App\User::all()->each(function ($user){
+            $rpg_id = ($user->id < 31)?1:2;
             $user->rpgs()->attach([
-                rand(1,2) => [
+                $rpg_id => [
                     'credential' => rand(0, 1),
                     'gold' => rand(1000, 2000),
                     'cash' => rand(100, 1000),
