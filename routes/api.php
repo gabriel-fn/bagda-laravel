@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->get('/user', 'UserController@show');
+
+Route::middleware('auth:api')->put('/user/reset/password', 'UserController@resetPassword');
 
 Route::post('register', 'Auth\RegisterController@register');
 
