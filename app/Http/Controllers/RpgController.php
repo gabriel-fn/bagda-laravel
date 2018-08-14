@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateRpg;
 use App\Rpg;
 use App\Player;
+use Carbon\Carbon;
 
 class RpgController extends Controller
 {
@@ -34,6 +35,43 @@ class RpgController extends Controller
         return Rpg::with(['master', 'shops.items.players.user', 'players' => function ($query) {
             $query->with(['items', 'user', 'requests']);
         }])->where('id', $id)->first();
+    }
+
+    public function create(Request $request)
+    {
+        $response = ['error' => false, 'message' => 'Rpg criado com sucesso!'];
+        $user = $request->user();
+        if ($user->authority < 1) {
+            $response = ['error' => true, 'message' => 'O usuário não tem autoridade para criar um rpg!'];
+        } else {
+            $count = Rpg::where('user_id', $user->id)->get()->count();
+            if ($count > 2) {
+                $response = ['error' => true, 'message' => 'O usuário alcançou o limite de rpgs que pode criar!'];
+            } else {
+                $user->my_rpgs()->create([
+                    'name' => 'Rpg criado por '.$user->name.' ('.Carbon::now().')', 
+                    'is_public' => false,
+                    'gold_starter' => 1000,
+                    'cash_starter' => 0,
+                ]);
+            }
+        }
+        return $response;
+    }
+
+    public function delete($id)
+    {
+        $response = ['error' => false, 'message' => 'Rpg deletado com sucesso!'];
+        $rpg = Rpg::find($id);
+        if (!$rpg) {
+            $response['error'] = true;
+            $response['message'] = 'Rpg não encontrado!';
+        } else { 
+            $this->authorize('delete', $rpg);
+            $rpg->delete();
+            $rpg->deleteDirectory();
+        }
+        return $response;
     }
 
     public function update(UpdateRpg $request) {

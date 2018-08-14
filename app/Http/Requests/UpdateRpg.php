@@ -25,7 +25,7 @@ class UpdateRpg extends FormRequest
     {
         return [
             'rpg_id' => 'exists:rpgs,id',
-            'name' => 'required|string|between:5,25',
+            'name' => 'required|string|unique:rpgs|between:5,25',
             'gold_starter' => 'required|integer|min:0',
             'cash_starter' => 'required|integer|min:0',
             'is_public' => 'required|boolean',
@@ -39,6 +39,7 @@ class UpdateRpg extends FormRequest
             'rpg_id.exists' => 'Rpg não encontrado!', 
             'name.required' => 'O nome do rpg não pode ficar em branco!',
             'name.string' => 'O nome do rpg não está em um formato valido!',
+            'name.unique' => 'O nome do rpg já está sendo usado!',
             'name.between' => 'O nome do rpg deve ter entre 5 e 25 caracteres!',
             'gold_starter.required' => 'O gold inicial não pode ficar em branco!',
             'gold_starter.integer' => 'O gold inicial tem que ser um número inteiro!',

@@ -41,6 +41,8 @@ Route::middleware('auth:api')->put('rpgs/requests/approve', 'PlayerController@ap
 
 Route::middleware('auth:api')->prefix('rpgs')->group(function () {
     Route::post('update', 'RpgController@update');
+    Route::put('create', 'RpgController@create');
+    Route::delete('delete', 'RpgController@delete');
 
     Route::prefix('players')->group(function () {
         Route::post('update', 'PlayerController@update');

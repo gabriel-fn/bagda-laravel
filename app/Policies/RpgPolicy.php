@@ -10,6 +10,16 @@ class RpgPolicy
 {
     use HandlesAuthorization;
 
+    public function delete(User $user, Rpg $rpg)
+    {
+        if ($user && $rpg) {
+            if ($rpg->user_id === $user->id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function update(User $user, Rpg $rpg)
     {
         if ($user && $rpg) {
