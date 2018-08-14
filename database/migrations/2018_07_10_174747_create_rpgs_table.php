@@ -16,7 +16,7 @@ class CreateRpgsTable extends Migration
         Schema::create('rpgs', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->boolean('is_public');
             $table->unsignedInteger('gold_starter');
             $table->unsignedInteger('cash_starter');

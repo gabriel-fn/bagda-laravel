@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateRpg;
 use App\Rpg;
 use App\Player;
-use Carbon\Carbon;
 
 class RpgController extends Controller
 {
@@ -22,6 +21,8 @@ class RpgController extends Controller
 
     public function show($id, Request $request)
     {
+        $response = ['error' => false, 'message' => 'Rpg carregado com sucesso!', 'data' => null];
+
         if ($request->user()) {
             $rpg = $request->user()->rpgs()->with(['master', 'shops.items.players.user', 'players' => function ($query) {
                 $query->with(['items', 'user', 'requests']);
@@ -29,12 +30,22 @@ class RpgController extends Controller
 
             if ($rpg) {
                 $rpg->player->load(['user', 'items', 'requests']);
-                return $rpg;
+                $response['data'] = $rpg;
+                return $response;
             }
         }
-        return Rpg::with(['master', 'shops.items.players.user', 'players' => function ($query) {
+        $rpg = Rpg::with(['master', 'shops.items.players.user', 'players' => function ($query) {
             $query->with(['items', 'user', 'requests']);
         }])->where('id', $id)->first();
+        
+        if ($rpg) {
+            $response['data'] = $rpg;
+            return $response;
+        } else {
+            $response['error'] = true;
+            $response['message'] = 'Rpg não encontrado!';
+            return $response;
+        }
     }
 
     public function create(Request $request)
@@ -49,7 +60,7 @@ class RpgController extends Controller
                 $response = ['error' => true, 'message' => 'O usuário alcançou o limite de rpgs que pode criar!'];
             } else {
                 $user->my_rpgs()->create([
-                    'name' => 'Rpg criado por '.$user->name.' ('.Carbon::now().')', 
+                    'name' => 'Rpg criado por '.$user->name, 
                     'is_public' => false,
                     'gold_starter' => 1000,
                     'cash_starter' => 0,
