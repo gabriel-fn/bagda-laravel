@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateRpg;
+use App\Http\Requests\CreateRpg;
 use App\Rpg;
 use App\Player;
 
@@ -48,9 +49,9 @@ class RpgController extends Controller
         }
     }
 
-    public function create(Request $request)
+    public function create(CreateRpg $request)
     {
-        $response = ['error' => false, 'message' => 'Rpg criado com sucesso!'];
+        $response = ['error' => false, 'message' => 'Rpg criado com sucesso! Se inscreva na mesa que acabou de criar!!!'];
         $user = $request->user();
         if ($user->authority < 1) {
             $response = ['error' => true, 'message' => 'O usuário não tem autoridade para criar um rpg!'];
@@ -60,10 +61,10 @@ class RpgController extends Controller
                 $response = ['error' => true, 'message' => 'O usuário alcançou o limite de rpgs que pode criar!'];
             } else {
                 $user->my_rpgs()->create([
-                    'name' => 'Rpg criado por '.$user->name, 
-                    'is_public' => false,
-                    'gold_starter' => 1000,
-                    'cash_starter' => 0,
+                    'name' => $request->name, 
+                    'is_public' => $request->is_public,
+                    'gold_starter' => $request->gold_starter,
+                    'cash_starter' => $request->cash_starter,
                 ]);
             }
         }
