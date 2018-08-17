@@ -25,6 +25,13 @@ class Rpg extends Model
         }
     }
 
+    public function deleteImage()
+    {
+        if (Storage::exists('images/rpgs/'.$this->id.'/'.$this->id.'.jpg')) {
+            Storage::delete('images/rpgs/'.$this->id.'/'.$this->id.'.jpg');
+        }
+    }
+
     public function getImageAttribute() {
         if (!Storage::exists('images/rpgs/'.$this->id.'/'.$this->id.'.jpg')) {
             return asset('storage/images/rpgs/default.jpg');

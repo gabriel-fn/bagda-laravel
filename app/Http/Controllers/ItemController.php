@@ -34,6 +34,7 @@ class ItemController extends Controller
         $item->update($request->only('name', 'gold_price', 'cash_price', 'max_units', 'require_test', 'detail'));
         if ($request->has('image')) {
             $item->makeDirectory();
+            $item->deleteImage();
             $request->file('image')->storeAs('images/rpgs/'.$item->shop->rpg->id.'/shops/'.$item->shop->id, $item->id.'.jpg');
         }
         return $response;
