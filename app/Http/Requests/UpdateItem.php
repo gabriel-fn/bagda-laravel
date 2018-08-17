@@ -25,7 +25,7 @@ class UpdateItem extends FormRequest
     {
         return [
             'item_id' => 'exists:items,id',
-            'name' => 'required|string|between:5,25',
+            'name' => 'required|string|between:1,25',
             'gold_price' => 'required|integer|min:0',
             'cash_price' => 'required|integer|min:0',
             'max_units' => 'required|integer|min:0',

@@ -25,7 +25,7 @@ class CreateItem extends FormRequest
     {
         return [
             'shop_id' => 'exists:shops,id',
-            'name' => 'required|string|between:5,25',
+            'name' => 'required|string|between:1,25',
             'gold_price' => 'required|integer|min:0',
             'cash_price' => 'required|integer|min:0',
             'max_units' => 'required|integer|min:0',
@@ -40,7 +40,7 @@ class CreateItem extends FormRequest
             'shop_id.exists' => 'Loja não encontrada!', 
             'name.required' => 'O nome do item não pode ficar em branco!',
             'name.string' => 'O nome do item não está em um formato valido!',
-            'name.between' => 'O nome do item deve ter entre 5 e 25 caracteres!',
+            'name.between' => 'O nome do item deve ter entre 1 e 25 caracteres!',
             'gold_price.required' => 'O preço em gold não pode ficar em branco!',
             'gold_price.integer' => 'O preço em gold tem que ser um número inteiro!',
             'gold_price.min' => 'O preço em gold tem que ter um valor maior ou igual a 0!',

@@ -25,7 +25,7 @@ class CreateShop extends FormRequest
     {
         return [
             'rpg_id' => 'exists:rpgs,id',
-            'name' => 'required|string|between:5,25',
+            'name' => 'required|string|between:1,25',
             'is_multiple_sale' => 'required|boolean',
         ];
     }
@@ -36,7 +36,7 @@ class CreateShop extends FormRequest
             'rpg_id.exists' => 'Rpg não encontrado!', 
             'name.required' => 'O nome da loja não pode ficar em branco!',
             'name.string' => 'O nome da loja não está em um formato valido!',
-            'name.between' => 'O nome da loja deve ter entre 5 e 25 caracteres!',
+            'name.between' => 'O nome da loja deve ter entre 1 e 25 caracteres!',
             'is_multiple_sale.required' => 'Deve informar se a loja é de vendas multiplas ou únicas!',
             'is_multiple_sale.boolean' => 'Deve informar se a loja é de vendas multiplas ou únicas!',
         ];
