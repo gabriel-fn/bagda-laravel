@@ -93,7 +93,7 @@ class RpgController extends Controller
         $rpg->update($request->only('name', 'gold_starter', 'cash_starter', 'is_public'));
         if ($request->has('image')) {
             $rpg->makeDirectory();
-            $rpg->deleteImage();
+            //$rpg->deleteImage();
             $request->file('image')->storeAs('images/rpgs/'.$rpg->id, $rpg->id.'.jpg');
         }
         return $response;

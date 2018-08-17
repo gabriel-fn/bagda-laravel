@@ -19,7 +19,7 @@ class PlayerController extends Controller
         $player->update($request->only('credential', 'gold', 'cash', 'detail'));
         if ($request->has('image')) {
             $player->makeDirectory();
-            $player->deleteImage();
+            //$player->deleteImage();
             $request->file('image')->storeAs('images/rpgs/'.$player->rpg->id.'/players', $player->id.'.jpg');
         }
         return $response;
